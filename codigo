@@ -1,0 +1,130 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <locale.h>
+
+struct ficha{ //estrutura para efetuar os cadastros
+	int cod_cliente;
+	char nome[200];
+	int DDD;
+	char telefone[30];
+	char email[200];
+};
+
+
+int menu(); //prototipo funcao menu
+int menu_cadastro(int c, ficha cadastro[5]); //prototipo funcao cadastro
+int mostrar_agenda(int c, ficha cadastro[5]); //prototipo funcao mostrar agenda
+
+
+int main(){ //programa principal
+	setlocale(LC_ALL, "Portuguese");
+	struct ficha cadastro[5];
+	int opcao, c;
+	c = 0;	
+	do {
+		opcao = menu();
+		if (opcao == 1 && c < 5){
+			menu_cadastro(c, cadastro);
+			c += 1;	
+			} else { if (opcao == 1 && c == 5){
+				printf("\n=============");
+				printf("\nAgenda Lotada");
+				printf("\n=============");
+				printf("\nPressione ENTER voltar ao MENU:");
+				system("\npause > NULL");
+			} else { if (opcao == 2){
+				mostrar_agenda(c, cadastro);
+			} else {
+				system("cls");
+				printf("==================");
+				printf("\nAgenda Finalizada");
+				printf("\n==================");
+			}
+			}
+		}
+	}
+	while (opcao != 0);
+	return(0);
+}
+
+
+int menu(){ //menu de opções
+	int opcao;
+	do{
+		system("cls");
+		printf("-=-=-=-=-=-=-=-=-=-=-");
+		printf("\n   AGENDA VERS-1.0   ");
+		printf("\n-=-=-=-=-=-=-=-=-=-=-");
+		printf("\n   Menu de Opções    ");
+		printf("\n-=-=-=-=-=-=-=-=-=-=-");
+		printf("\n1)Novo Cadastro: ");
+		printf("\n2)Mostrar Cadastros: ");
+		printf("\n0)Sair: ");
+		printf("\nDigite sua opção: ");
+		fflush(stdin);
+		scanf("%d", &opcao);
+		if (opcao >= 3 || opcao < 0){
+			printf("========================");
+			printf("\nERRO! Opção invalida!");
+			printf("\n========================");
+			printf("\nPressione ENTER para voltar ao MENU:");
+			system("\npause > NULL");
+		}
+	}
+	while (opcao >= 3 || opcao < 0);
+	return (opcao);
+}
+	
+
+int menu_cadastro(int c, ficha cadastro[5]){ //funcao para cadastro de clientes
+	system("cls");
+	printf("========================");
+	printf("\n      NOVO CADASTRO     ");
+	printf("\n========================");
+	srand(time(NULL));
+	cadastro[c].cod_cliente = rand() % 99;
+	printf("\nCódigo do cliente: %d\n", cadastro[c].cod_cliente);
+	printf("Nome: ");
+	fflush(stdin);
+	gets(cadastro[c].nome);
+	printf("E-mail: ");
+	fflush(stdin);
+	gets(cadastro[c].email);
+	printf("DDD: ");
+	fflush(stdin);
+	scanf("%d", &cadastro[c].DDD);
+	printf("Telefone: ");
+	fflush(stdin);
+	gets(cadastro[c].telefone);
+	printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+	printf("\nCadastro realizado com sucesso");
+	printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+	printf("\nPressione ENTER para voltar ao MENU:");
+	system("\npause > NULL");
+	return(0);
+}
+
+
+int mostrar_agenda(int c, ficha cadastro[5]){ //função para mostrar os cadastros da agenda
+	system("cls");
+	printf("\n==============================");
+	printf("\n      AGENDA DE CLIENTES      ");
+	printf("\n==============================");
+	if (c == 0){
+		printf("\n          Agenda vazia        ");
+		printf("\n==============================");
+	}else {
+		for (int x = 0; x < c; x++){
+			printf("\nCódigo do cliente: %d", cadastro[x].cod_cliente);
+			printf("\nNome: %s", cadastro[x].nome);
+			printf("\nE-mail: %s", cadastro[x].email);
+			printf("\nTelefone: (%i)-%s", cadastro[x].DDD, cadastro[x].telefone);
+			printf("\n==============================\n");
+		}
+	}
+	printf("\nPressione ENTER para voltar ao MENU:");
+	system("\npause > NULL");
+	return (0);
+}
